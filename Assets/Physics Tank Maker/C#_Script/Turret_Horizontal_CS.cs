@@ -23,7 +23,7 @@ public class Turret_Horizontal_CS : MonoBehaviour
 
     float Current_Angle;
     float Target_Angle;
-    float Temp_Horizontal;
+    public float Temp_Horizontal;
     public float Current_Horizontal; // Referred to from "Sound_Control_CS".
     bool Tracking_Flag = false;
     Transform Target_Transform;
@@ -93,16 +93,19 @@ public class Turret_Horizontal_CS : MonoBehaviour
             switch (Input_Type)
             {
                 case 0:
-                    KeyBoard_Input();
+                    //KeyBoard_Input();
                     break;
                 case 1:
-                    Stick_Input();
+                    //Stick_Input();
                     break;
                 case 2:
-                    Trigger_Input();
+                    //Trigger_Input();
                     break;
                 case 3:
-                    Stick_Input();
+                    //Stick_Input();
+                    break;
+                case 8:
+                    Crank_Input();
                     break;
             }
         }
@@ -112,7 +115,7 @@ public class Turret_Horizontal_CS : MonoBehaviour
     {
         if ((Input_Type == 4 || Input_Type == 5) && Flag)
         {
-            Mouse_Input();
+            //Mouse_Input();
         }
     }
 
@@ -133,6 +136,11 @@ public class Turret_Horizontal_CS : MonoBehaviour
                     break;
             }
         }
+    }
+
+    void Crank_Input()
+    {
+        Rotate();
     }
 
     void Stick_Input()

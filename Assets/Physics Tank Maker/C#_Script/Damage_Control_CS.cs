@@ -27,10 +27,17 @@ public class Damage_Control_CS : MonoBehaviour {
 	SphereCollider Wheel_SphereCollider ; // for Wheels.
 	Drive_Wheel_CS Drive_Wheel_Script ; // for Wheels.
 
+    public int ai_id = 0;
+
 	//added TankLives
 	public TankLives lives;
 
-	void Start (){
+    void Set_Ai_Id(int id)
+    {
+        ai_id = id;
+    }
+
+    void Start (){
 		switch ( Type ) {
 		case 1 : // Armor_Collider
 			Parent_Transform = transform.parent ;
@@ -103,15 +110,22 @@ public class Damage_Control_CS : MonoBehaviour {
 		}
 	}
 
-	public bool Breaker ( float Hit_Energy ) {
+	public bool Breaker ( float Hit_Energy ) { //only called on current_player == 2
 		lives.loseLife ();
 		if (lives.getLives () <= 0) {
-			Penetration ();
+			//Penetration ();
+
+            if (ai_id == 0) // own tank
+                transform.root.GetChild(0).GetComponent<Turret_Controller_VR>().Alert_Turret_Penetration();
+            else // ai on authority
+                transform.root.GetChild(0).GetComponent<AI_Controller_VR>().Alert_Turret_Penetration(ai_id);
+            
 			return true;
 		}
 		else if (lives.getLives () <= 1) {
-			Trouble ();
-			return false;
+			//Trouble ();
+    
+            return false;
 		}
 		else {
 			return false;
@@ -129,7 +143,8 @@ public class Damage_Control_CS : MonoBehaviour {
 	}
 
     
-	void  Penetration () {
+	public void  Penetration () {
+
 		switch ( Type ) {
 		case 1 : // Armor_Collider
 			Armor_Collider_Broken () ;

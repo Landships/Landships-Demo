@@ -14,7 +14,12 @@ public class Cannon_Vertical_CS : MonoBehaviour
 
     float Current_Angle;
     float Target_Angle;
+
+
     public float Temp_Vertical; // Referred to from "Sound_Control_CS".
+
+
+
     bool Tracking_Flag = false;
     bool Moving_Flag = false;
     bool Fire_Flag = false;
@@ -77,6 +82,9 @@ public class Cannon_Vertical_CS : MonoBehaviour
                 case 5:
                     Mouse_Input();
                     break;
+                case 8:
+                    Crank_Input();
+                    break;
             }
         }
     }
@@ -96,8 +104,17 @@ public class Cannon_Vertical_CS : MonoBehaviour
                 case 10:
                     AI_Input();
                     break;
+                case 8:
+                    Auto_Turn();
+                    break;
             }
         }
+    }
+
+    void Crank_Input()
+    {
+        //Debug.Log(Temp_Vertical.ToString());
+        Rotate();
     }
 
     void Stick_Input()
@@ -139,8 +156,7 @@ public class Cannon_Vertical_CS : MonoBehaviour
             Offset_Angle += (Input.mousePosition.y - Last_Mouse_Pos.y) * 0.02f;
             Last_Mouse_Pos = Input.mousePosition;
         }
-        else
-        {
+        else {
             Offset_Angle = 0.0f;
         }
     }
@@ -171,15 +187,13 @@ public class Cannon_Vertical_CS : MonoBehaviour
             {
                 Target_Angle = Auto_Angle(); // Calculate the proper angle.
             }
-            else
-            {
+            else {
                 Target_Angle = Manual_Angle(); // Simply turn toward the target.
             }
             Target_Angle += Mathf.DeltaAngle(0.0f, This_Transform.localEulerAngles.x);
             Target_Angle += Offset_Angle;
         }
-        else
-        { // Not tracking. Return to the initial position.
+        else { // Not tracking. Return to the initial position.
             Target_Angle = -Mathf.DeltaAngle(This_Transform.localEulerAngles.x, 0.0f);  // Calculate the angle to the initial position.
             if (Mathf.Abs(Target_Angle) < 0.01f)
             { // Cannon returned to the initial position.
@@ -197,8 +211,7 @@ public class Cannon_Vertical_CS : MonoBehaviour
             Temp_Vertical = Mathf.Lerp(0.0f, 1.0f, -Target_Angle / (Speed_Mag * Time.fixedDeltaTime + Buffer_Angle));
             Rotate_In_FixedUpdate();
         }
-        else
-        {
+        else {
             Temp_Vertical = 0.0f;
         }
     }
@@ -228,13 +241,11 @@ public class Cannon_Vertical_CS : MonoBehaviour
             {
                 Temp_Angle = Mathf.Rad2Deg * Mathf.Atan(-Pos_X_Base / 2.0f + Mathf.Pow(Pos_Y_Base, 0.5f));
             }
-            else
-            {
+            else {
                 Temp_Angle = Mathf.Rad2Deg * Mathf.Atan(-Pos_X_Base / 2.0f - Mathf.Pow(Pos_Y_Base, 0.5f));
             }
         }
-        else
-        {
+        else {
             Temp_Angle = 45.0f;
         }
         Vector3 Temp_Pos = This_Transform.parent.forward;
@@ -278,20 +289,17 @@ public class Cannon_Vertical_CS : MonoBehaviour
                     RayCast_Count = 0.0f;
                 }
             }
-            else
-            { // Target is not detected.
+            else { // Target is not detected.
                 Fire_Flag = false;
                 RayCast_Count = 0.0f;
             }
         }
-        else
-        { // InDirect Fire.
+        else { // InDirect Fire.
             if (AI_Script.Detect_Flag)
             { // Target is detected.
                 Fire_Flag = true;
             }
-            else
-            {
+            else {
                 Fire_Flag = false; // Target is not detected.
             }
         }
@@ -317,14 +325,12 @@ public class Cannon_Vertical_CS : MonoBehaviour
             { // Cannon can directly aim the target.
                 return true;
             }
-            else
-            { // Ray hits something else.
+            else { // Ray hits something else.
                 Random_Offset();
                 return false;
             }
         }
-        else
-        { // Ray does not hit anyhing.
+        else { // Ray does not hit anyhing.
             Random_Offset();
             return false;
         }
@@ -345,8 +351,7 @@ public class Cannon_Vertical_CS : MonoBehaviour
                     Random_Offset();
                 }
             }
-            else
-            { // Cannon is not within the angle range.
+            else { // Cannon is not within the angle range.
                 if (AI_Script.Direct_Fire)
                 {
                     if (AI_Script.Near_Flag)
@@ -359,20 +364,17 @@ public class Cannon_Vertical_CS : MonoBehaviour
                             Random_Offset();
                         }
                     }
-                    else
-                    { // The target is out of Approach_Distance.
+                    else { // The target is out of Approach_Distance.
                         Cannon_Count = 0.0f;
                         Wait_Count = 0.0f;
                     }
                 }
-                else
-                {
+                else {
                     Cannon_Count = 0.0f;
                 }
             }
         }
-        else
-        { // Turret is not ready, or Ray does not hit the target.
+        else { // Turret is not ready, or Ray does not hit the target.
             Cannon_Count = 0.0f;
             Wait_Count = 0.0f;
         }
@@ -413,8 +415,7 @@ public class Cannon_Vertical_CS : MonoBehaviour
         {
             Flag = true;
         }
-        else
-        {
+        else {
             Flag = false;
         }
     }

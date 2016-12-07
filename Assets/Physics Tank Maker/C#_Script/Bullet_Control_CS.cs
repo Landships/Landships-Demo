@@ -20,6 +20,8 @@ public class Bullet_Control_CS : MonoBehaviour
     bool Live_Flag = true;
     int RayCast_Switch = 0;
 
+    public int current_player;
+
     Vector3 Next_Position;
     GameObject Hit_Object;
     Vector3 Hit_Normal;
@@ -86,6 +88,8 @@ public class Bullet_Control_CS : MonoBehaviour
                 Instantiate(Explosion_Object, This_Transform.position, Quaternion.identity);
             }
         }
+
+
         // Send Message
         if (Temp_Object)
         {
@@ -110,6 +114,12 @@ public class Bullet_Control_CS : MonoBehaviour
                         Debug.Log("AP Damage " + Hit_Energy + " on " + Temp_Object.name);
                     }
                     // Send 'Hit_Energy' to "Damage_Control" script.
+                    if (current_player == 1)
+                    {
+                        Destroy(this.gameObject);
+                        return;
+                    }
+
                     if (Temp_Script.Breaker(Hit_Energy))
                     {
                         Destroy(this.gameObject);
