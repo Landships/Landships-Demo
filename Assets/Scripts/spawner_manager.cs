@@ -13,6 +13,7 @@ public class spawner_manager : MonoBehaviour
     static Ai_Prep ai_2;
     static Ai_Prep ai_3;
     static Ai_Prep ai_4;
+    static GameObject gunner_spawn;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class spawner_manager : MonoBehaviour
         ai_2 = GameObject.Find("AI_2").transform.GetChild(0).GetComponent<Ai_Prep>();
         ai_3 = GameObject.Find("AI_3").transform.GetChild(0).GetComponent<Ai_Prep>();
         ai_4 = GameObject.Find("AI_4").transform.GetChild(0).GetComponent<Ai_Prep>();
+        gunner_spawn = GameObject.Find("GUNNER_CAMERA");
     }
 
 
@@ -118,6 +120,13 @@ public class spawner_manager : MonoBehaviour
             vr_player.gameObject.GetComponent<PlayerController_VR>().right_controller = right_controller;
 
             vr_player.gameObject.GetComponent<PlayerController_VR>().add_trigger_listener();
+
+        }
+
+        if (current_player == 2)
+        {
+            camera_rig.transform.parent = gunner_spawn.transform;
+            camera_rig.transform.position = gunner_spawn.transform.position;
 
         }
 

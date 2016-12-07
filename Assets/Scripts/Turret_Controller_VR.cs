@@ -61,6 +61,7 @@ public class Turret_Controller_VR : MonoBehaviour
     void Start() {
         control_angles = GetComponent<Control_Angles>();
         cannon_vertical = cannon_base.GetComponent<Cannon_Vertical_CS>();
+        cannon_fire = cannon_base.GetComponent<Cannon_Fire_CS>();
 
     }
 
