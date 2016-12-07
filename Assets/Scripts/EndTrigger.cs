@@ -13,6 +13,15 @@ public class EndTrigger : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space)) {
             Application.LoadLevel("GameScene");
         }
+        else if (Input.GetKeyDown("m")) {
+            Application.LoadLevel("Menu");
+        }
+        else if (Input.GetKeyDown("d")) {
+            Application.LoadLevel("DriveTutorial");
+        }
+        else if (Input.GetKeyDown("g")) {
+            Application.LoadLevel("ShootingTutorial");
+        }
     }
 
 
