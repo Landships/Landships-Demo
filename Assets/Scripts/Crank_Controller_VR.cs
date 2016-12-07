@@ -48,7 +48,7 @@ public class Crank_Controller_VR : MonoBehaviour
         if (current_player != 2)
         {
             vertical_crank.GetComponent<VRTK.VRTK_InteractableObject>().enabled = false;
-            horizontal_crank.GetComponent<VRTK.VRTK_InteractableObject>().enabled = false;
+            //horizontal_crank.GetComponent<VRTK.VRTK_InteractableObject>().enabled = false;
         }
     }
 

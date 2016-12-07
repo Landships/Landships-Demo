@@ -28,6 +28,12 @@ public class Control_Angles : MonoBehaviour {
     float vert_change;
 
 
+    float hori_degree;
+    float hori_prev;
+
+    float hori_change;
+
+
     void Start() {
         left_lever_joint = left_lever.GetComponent<HingeJoint>();
         right_lever_joint = right_lever.GetComponent<HingeJoint>();
@@ -41,13 +47,16 @@ public class Control_Angles : MonoBehaviour {
 
         vert_degree = vert_crank_joint.angle;
         vert_prev = vert_degree;
+
+        hori_degree = hori_crank_joint.angle;
+        hori_prev = hori_degree;
     }
 
     void Update() {
 
         float curr = vert_crank_joint.angle;
         if (curr < 0) {
-            curr = vert_lower + curr;
+            curr = 360 + curr;
         }
 
         vert_change = Mathf.DeltaAngle(vert_prev, curr); 
@@ -69,8 +78,19 @@ public class Control_Angles : MonoBehaviour {
                 return;
             }
         }
-        //Debug.Log(vert_degree);
 
+
+        curr = hori_crank_joint.angle;
+        if (curr < 0)
+        {
+            curr = 360 + curr;
+        }
+
+        hori_change = Mathf.DeltaAngle(hori_prev, curr);
+
+        hori_prev = curr;
+
+        hori_degree += hori_change;
 
     }
 
@@ -95,6 +115,11 @@ public class Control_Angles : MonoBehaviour {
 
     public float GetVertCrankDelta() {
         return vert_change;
+    }
+
+    public float GetHoriCrankDelta()
+    {
+        return hori_change;
     }
 
     public void SetLeftLeverAngle(float localX) {
