@@ -103,6 +103,7 @@ public class Turret_Controller_VR : MonoBehaviour
     {
         cannon_fire.Fire();
         n_manager_script.send_reliable_from_client(1, 1);
+        Debug.Log("Emit Fire");
     }
 
 
