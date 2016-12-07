@@ -139,7 +139,7 @@ public class Turret_Controller_VR : MonoBehaviour
             //
         } else {
             cannon_base.transform.localRotation = Quaternion.Euler(cannon_base_rotation_x, 0, 0);
-            turret_objects.transform.localRotation = Quaternion.Euler(0, turret_base_rotation_y, 0);
+            turret_base.transform.localRotation = Quaternion.Euler(0, turret_base_rotation_y, 0);
         }
     }
 
