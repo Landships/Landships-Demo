@@ -139,7 +139,7 @@ public class Turret_Controller_VR : MonoBehaviour
             //
         } else {
             cannon_base.transform.localRotation = Quaternion.Euler(cannon_base_rotation_x, 0, 0);
-            turret_base.transform.localRotation = Quaternion.Euler(0, turret_base_rotation_y, 0);
+            turret_objects.transform.localRotation = Quaternion.Euler(0, turret_base_rotation_y, 0);
         }
     }
 
@@ -157,7 +157,7 @@ public class Turret_Controller_VR : MonoBehaviour
     // The client get its values/inputs to send to the server
     void client_send_values() {
         float[] cannon_base_rotation_values = { cannon_base.transform.eulerAngles.x,
-                                                turret_base.transform.eulerAngles.y,
+                                                turret_objects.transform.eulerAngles.y,
                                                 0};
         /*
         float[] hull_rotation_values = { transform.localRotation.eulerAngles.x,
@@ -179,7 +179,7 @@ public class Turret_Controller_VR : MonoBehaviour
     public void server_get_values_to_send() {
 
         float[] cannon_base_rotation_values = { cannon_base.transform.eulerAngles.x,
-                                                turret_base.transform.eulerAngles.y,
+                                                turret_objects.transform.eulerAngles.y,
                                                 0};
         /*
         float[] hull_rotation_values = { transform.localRotation.eulerAngles.x,
