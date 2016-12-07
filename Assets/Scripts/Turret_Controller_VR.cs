@@ -40,7 +40,6 @@ public class Turret_Controller_VR : MonoBehaviour
     Cannon_Vertical_CS cannon_vertical;
     Turret_Horizontal_CS turret_horizontal;
     Cannon_Fire_CS cannon_fire;
-    GameObject turret_base;
 
     bool started = false;
     bool ready = false;
@@ -66,7 +65,6 @@ public class Turret_Controller_VR : MonoBehaviour
         cannon_vertical = cannon_base.GetComponent<Cannon_Vertical_CS>();
         cannon_fire = cannon_base.GetComponent<Cannon_Fire_CS>();
         turret_horizontal = turret_objects.GetComponentInChildren<Turret_Horizontal_CS>();
-        turret_base = turret_objects.transform.Find("Turret_Base").gameObject;
 
     }
 
@@ -138,7 +136,7 @@ public class Turret_Controller_VR : MonoBehaviour
         if (current_player == 2) { 
             //
         } else {
-            if (Quaternion.Angle(turret_objects.transform.localRotation, Quaternion.Euler(0, turret_base_rotation_y, 0)) > 3.5f)
+            if (Quaternion.Angle(turret_objects.transform.localRotation, Quaternion.Euler(0, turret_base_rotation_y, 0)) > 0.1f)
             {
                 turret_objects.transform.localRotation = Quaternion.Euler(0, turret_base_rotation_y, 0);
             }
