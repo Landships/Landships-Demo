@@ -63,7 +63,7 @@ public class network_manager : MonoBehaviour
     public byte[] server_to_client_data_large = new byte[103]; // this also stores the data for the client
     public byte[] server_reliable_buffer = new byte[103];
     public byte[] server_data_from_client = new byte[100];
-
+    public byte[] server_reliable_data_from_client = new byte[100];
 
     int frame = 0;
 
@@ -745,12 +745,6 @@ public class network_manager : MonoBehaviour
 
     }
 
-    public void client_send_reliable() {
-        byte error;
-        client_reliable_buffer[0] = 1;
-        NetworkTransport.Send(client_socket_ID, client_connection, server_reliable_channel, client_reliable_buffer, size_of_client_buffer, out error);
-
-    }
 
 
 
@@ -759,7 +753,8 @@ public class network_manager : MonoBehaviour
     // RECIEVE FUNCTIONS
     // ----------------------------
 
-    void server_recieve_data() {
+    void server_recieve_data()
+    {
         byte error;
         //Debug.Log("Server is checking for messages...");
         int received_host_ID;
@@ -782,7 +777,8 @@ public class network_manager : MonoBehaviour
                                                 out error
                                                 );
 
-        switch (networkEvent) {
+        switch (networkEvent)
+        {
             case NetworkEventType.Nothing:
 
                 //server_player_control = server_client_connection[0];
@@ -792,14 +788,20 @@ public class network_manager : MonoBehaviour
                 break;
             case NetworkEventType.DataEvent:
                 Debug.Log("Recieved data from Player 2");
-                if (received_channel_ID == server_real_reliable_channel) {
+                if (received_channel_ID == server_real_reliable_channel)
+                {
+                    server_reliable_data_from_client = buffer;
                     reliable_message = true;
-                } else {
+
+                }
+                else
+                {
+                    server_data_from_client = buffer;
                     reliable_message = false;
                 }
 
                 // Thid updates the buffer and the current player
-                server_data_from_client = buffer;
+
                 server_player_control = received_connection_ID + 1; // Update world based on data from player 2 message
 
                 break;
@@ -843,6 +845,86 @@ public class network_manager : MonoBehaviour
                 break;
         }
     }
+
+
+
+
+    public float server_read_client_reliable_buffer(int object_case)
+    {
+
+
+        float[] value = { 0.0f };
+
+
+        switch (object_case)
+        {
+            case 1: // Fired?
+                Buffer.BlockCopy(server_reliable_data_from_client, 0, value, 0, 4);
+                break;
+            case 2: // Tank ID 1
+                Buffer.BlockCopy(server_reliable_data_from_client, 4, value, 0, 4);
+                break;
+            case 3: // Tank ID 2
+                Buffer.BlockCopy(server_reliable_data_from_client, 8, value, 0, 4);
+                break;
+            case 4: // Tank ID 3
+                Buffer.BlockCopy(server_reliable_data_from_client, 12, value, 0, 4);
+                break;
+            case 5: // Tank ID 4
+                Buffer.BlockCopy(server_reliable_data_from_client, 16, value, 0, 4);
+                break;
+        }
+
+        return value[0];
+    }
+
+    public void send_reliable_from_client(int object_case, float input)
+    {
+        //client_to_server_data_large;
+        //client_reliable_buffer;
+
+        float[] value = { input };
+        float[] clear_buffer = { 0.0f };
+
+        Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 0, 4);
+        Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 4, 4);
+        Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 8, 4);
+        Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 12, 4);
+        Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 16, 4);
+
+        switch (object_case)
+        {
+            case 1: // Fired
+                Buffer.BlockCopy(value, 0, client_reliable_buffer, 0, 4);
+                break;
+            case 2: // Tank ID 1
+                Buffer.BlockCopy(value, 0, client_reliable_buffer, 4, 4);
+                break;
+            case 3: // Tank ID 2
+                Buffer.BlockCopy(value, 0, client_reliable_buffer, 8, 4);
+                break;
+            case 4: // Tank ID 3
+                Buffer.BlockCopy(value, 0, client_reliable_buffer, 12, 4);
+                break;
+            case 5: // Tank ID 4
+                Buffer.BlockCopy(value, 0, client_reliable_buffer, 16, 4);
+                break;
+        }
+
+        client_send_reliable();
+    }
+
+    public void client_send_reliable()
+    {
+        byte error;
+        NetworkTransport.Send(client_socket_ID, client_connection, server_reliable_channel, client_reliable_buffer, size_of_client_buffer, out error);
+
+    }
+
+
+ 
+
+  
 
 
 
