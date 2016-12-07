@@ -9,6 +9,10 @@ public class spawner_manager : MonoBehaviour
     static GameObject left_controller;
     static GameObject right_controller;
     static NetworkPrep prep_script;
+    static Ai_Prep ai_1;
+    static Ai_Prep ai_2;
+    static Ai_Prep ai_3;
+    static Ai_Prep ai_4;
 
     void Start()
     {
@@ -16,6 +20,10 @@ public class spawner_manager : MonoBehaviour
         left_controller = camera_rig.transform.FindChild("Controller (left)").gameObject;
         right_controller = camera_rig.transform.FindChild("Controller (right)").gameObject;
         prep_script = GameObject.Find("PlayerTank").transform.GetChild(0).GetComponent<NetworkPrep>();
+        ai_1 = GameObject.Find("AI_1").transform.GetChild(0).GetComponent<Ai_Prep>();
+        ai_2 = GameObject.Find("AI_2").transform.GetChild(0).GetComponent<Ai_Prep>();
+        ai_3 = GameObject.Find("AI_3").transform.GetChild(0).GetComponent<Ai_Prep>();
+        ai_4 = GameObject.Find("AI_4").transform.GetChild(0).GetComponent<Ai_Prep>();
     }
 
 
@@ -114,6 +122,10 @@ public class spawner_manager : MonoBehaviour
         }
 
         prep_script.BroadCast();
+        ai_1.BroadCast();
+        ai_2.BroadCast();
+        ai_3.BroadCast();
+        ai_4.BroadCast();
 
 
 

@@ -28,48 +28,17 @@ public class Turret_Controller_VR : MonoBehaviour
     float cannon_base_rotation_x;
 
 
-
-
-
-    // Moving Barrel
-    float turns = 6.0f;
-    float vertical_lower_bound_angle = 5.0f;
-    float vertical_upper_bound_angle = -25.0f;
-    float vertical_angle_range = 30.0f;
-
-    float turn_ratio = 30.0f / 6.0f;
-
-    float max_positive = 1800.0f;
-    float max_negative = -360.0f;
-    float location_angle = 0.0f;
-
-    float location_in_range;
-    float past_angle;
-    bool increasing;
-    float location_adder;
-
-
-    // Moving the Turret
-    float number_of_turns = 20;
-    float max_angle_range;
-    float min_angle_range;
-
-    float tally_positive;
-    float tally_negative;
-    float previous_angle;
-
-    
-
-
-
     //trigger
 
     GameObject n_manager;
     network_manager n_manager_script;
     public GameObject turret_objects;
     public GameObject cannon_base;
+    public GameObject button;
+    public GameObject turret;
     Control_Angles control_angles;
     Cannon_Vertical_CS cannon_vertical;
+    Cannon_Fire_CS cannon_fire;
 
     bool started = false;
     bool ready = false;
@@ -84,9 +53,9 @@ public class Turret_Controller_VR : MonoBehaviour
         current_player = (byte)(n_manager_script.client_players_amount);
         if (current_player != 2) {
             cannon_vertical.enabled = false;
-            //this.GetComponent<Drive_Control_CS>().enabled = false;
-            //BroadcastMessage("DisableDriveWheel");
+            button.GetComponent<VRTK.Button>().enabled = false;
         }
+        BroadcastMessage("Set_Current_Player", current_player);
     }
 
     void Start() {
@@ -111,11 +80,37 @@ public class Turret_Controller_VR : MonoBehaviour
                 
             } 
             else {
+                if (reliable_message)
+                {
+                    if (n_manager_script.server_read_client_reliable_buffer(1) == 1)
+                    {
+                        cannon_fire.Fire();
+                    }
+                    if (n_manager_script.server_read_client_reliable_buffer(6) == 1)
+                    {
+                        turret.GetComponent<Damage_Control_CS>().Penetration();
+                    }
+                }
                 server_get_client_hands();
             }
 
 
         }
+    }
+
+    public void OwnerFire()
+    {
+        cannon_fire.Fire();
+        n_manager_script.send_reliable_from_client(1, 1);
+    }
+
+
+    public void Alert_Turret_Penetration()
+    {
+        turret.GetComponent<Damage_Control_CS>().Penetration();
+        n_manager_script.send_reliable_from_client(6, 1);
+
+        //reliable
     }
 
     void FixedUpdate() {
@@ -145,23 +140,9 @@ public class Turret_Controller_VR : MonoBehaviour
     }
 
 
-    public void add_trigger_listener() {
-        //right_controller.GetComponent<VRTK.VRTK_ControllerEvents>().TriggerClicked += new VRTK.ControllerInteractionEventHandler(client_send_reliable_message);
-    }
-
-
     // ----------------------------
     // Functions that use Block Copy
     // ----------------------------
-
-    void client_send_reliable_message(object sender, VRTK.ControllerInteractionEventArgs e) {
-        Debug.Log("CLICKED");
-        if (current_player == 1) {
-            n_manager_script.server_send_reliable();
-        } else {
-            n_manager_script.client_send_reliable();
-        }
-    }
 
 
     // The client get its values/inputs to send to the server

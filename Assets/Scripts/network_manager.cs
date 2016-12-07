@@ -873,6 +873,10 @@ public class network_manager : MonoBehaviour
             case 5: // Tank ID 4
                 Buffer.BlockCopy(server_reliable_data_from_client, 16, value, 0, 4);
                 break;
+            case 6: // player tank destroyed
+                Buffer.BlockCopy(server_reliable_data_from_client, 20, value, 0, 4);
+                break;
+
         }
 
         return value[0];
@@ -891,6 +895,7 @@ public class network_manager : MonoBehaviour
         Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 8, 4);
         Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 12, 4);
         Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 16, 4);
+        Buffer.BlockCopy(clear_buffer, 0, client_reliable_buffer, 20, 4);
 
         switch (object_case)
         {
@@ -908,6 +913,9 @@ public class network_manager : MonoBehaviour
                 break;
             case 5: // Tank ID 4
                 Buffer.BlockCopy(value, 0, client_reliable_buffer, 16, 4);
+                break;
+            case 6: //player destroyed
+                Buffer.BlockCopy(value, 0, client_reliable_buffer, 20, 4);
                 break;
         }
 

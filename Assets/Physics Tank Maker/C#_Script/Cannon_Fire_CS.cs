@@ -65,7 +65,7 @@ public class Cannon_Fire_CS : MonoBehaviour
     {
         if (Input.GetButton("R_Button"))
         {
-            Fire();
+            //Fire();
         }
     }
 
@@ -73,7 +73,7 @@ public class Cannon_Fire_CS : MonoBehaviour
     {
         if (Input.GetButton("Fire3"))
         {
-            Fire();
+            //Fire();
         }
     }
 
@@ -81,7 +81,7 @@ public class Cannon_Fire_CS : MonoBehaviour
     {
         if (Input.GetKey("x"))
         {
-            Fire();
+            //Fire();
         }
     }
 
@@ -89,11 +89,11 @@ public class Cannon_Fire_CS : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            Fire();
+            //Fire();
         }
     }
 
-    void Fire()
+    public void Fire()
     {
         if (Reload_Flag && Trouble_Flag == false && Turret_Horizontal_Script.OpenFire_Flag)
         {
