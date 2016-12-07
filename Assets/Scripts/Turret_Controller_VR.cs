@@ -40,6 +40,7 @@ public class Turret_Controller_VR : MonoBehaviour
     Cannon_Vertical_CS cannon_vertical;
     Turret_Horizontal_CS turret_horizontal;
     Cannon_Fire_CS cannon_fire;
+    GameObject turret_base;
 
     bool started = false;
     bool ready = false;
@@ -65,6 +66,7 @@ public class Turret_Controller_VR : MonoBehaviour
         cannon_vertical = cannon_base.GetComponent<Cannon_Vertical_CS>();
         cannon_fire = cannon_base.GetComponent<Cannon_Fire_CS>();
         turret_horizontal = turret_objects.GetComponentInChildren<Turret_Horizontal_CS>();
+        turret_base = turret_horizontal.gameObject;
 
     }
 
@@ -136,9 +138,9 @@ public class Turret_Controller_VR : MonoBehaviour
         if (current_player == 2) { 
             //
         } else {
-            if (Quaternion.Angle(turret_objects.transform.localRotation, Quaternion.Euler(0, turret_base_rotation_y, 0)) > 0.1f)
+            if (Quaternion.Angle(turret_base.transform.localRotation, Quaternion.Euler(0, turret_base_rotation_y, 0)) > 0.1f)
             {
-                turret_objects.transform.localRotation = Quaternion.Euler(0, turret_base_rotation_y, 0);
+                turret_base.transform.localRotation = Quaternion.Euler(0, turret_base_rotation_y, 0);
             }
             cannon_base.transform.localRotation = Quaternion.Euler(cannon_base_rotation_x, 0, 0);
             
@@ -159,7 +161,7 @@ public class Turret_Controller_VR : MonoBehaviour
     // The client get its values/inputs to send to the server
     void client_send_values() {
         float[] cannon_base_rotation_values = { cannon_base.transform.localEulerAngles.x,
-                                                turret_objects.transform.localEulerAngles.y,
+                                                turret_base.transform.localEulerAngles.y,
                                                 0};
         /*
         float[] hull_rotation_values = { transform.localRotation.eulerAngles.x,
@@ -181,7 +183,7 @@ public class Turret_Controller_VR : MonoBehaviour
     public void server_get_values_to_send() {
 
         float[] cannon_base_rotation_values = { cannon_base.transform.localEulerAngles.x,
-                                                turret_objects.transform.localEulerAngles.y,
+                                                turret_base.transform.localEulerAngles.y,
                                                 0};
         /*
         float[] hull_rotation_values = { transform.localRotation.eulerAngles.x,
