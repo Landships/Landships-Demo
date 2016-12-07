@@ -21,7 +21,7 @@ public class Drive_Wheel_CS : MonoBehaviour
     int Tank_ID;
     int Input_Type = 4;
 
-    Drive_Control_CS Control_Script;
+    public Drive_Control_CS Control_Script;
 
     void Start()
     {
@@ -31,8 +31,7 @@ public class Drive_Wheel_CS : MonoBehaviour
         {
             Direction = true; // Left
         }
-        else
-        {
+        else {
             Direction = false; // Right
         }
         // Set Turn_Brake_Flag.
@@ -40,8 +39,7 @@ public class Drive_Wheel_CS : MonoBehaviour
         { // Steered Wheel.
             Turn_Brake_Flag = false;
         }
-        else
-        {
+        else {
             Turn_Brake_Flag = true;
         }
     }
@@ -51,7 +49,7 @@ public class Drive_Wheel_CS : MonoBehaviour
 
     void Update()
     {
-        if (Control_Script && Control_Script.Fix_Useless_Rotaion)
+        if (Control_Script.Fix_Useless_Rotaion)
         {
             if (Control_Script.Parking_Brake)
             {
@@ -61,8 +59,7 @@ public class Drive_Wheel_CS : MonoBehaviour
                     Stored_Rotaion = transform.localRotation;
                 }
             }
-            else
-            {
+            else {
                 Fix_Flag = false;
                 return;
             }
@@ -76,12 +73,11 @@ public class Drive_Wheel_CS : MonoBehaviour
     void FixedUpdate()
     {
         // Drive.
-        if (Control_Script && Control_Script.Acceleration_Flag)
+        if (Control_Script.Acceleration_Flag)
         { // Acceleration mode.
             Acceleration_Mode();
         }
-        else
-        { // Constant mode.
+        else { // Constant mode.
             Constant_Mode();
         }
     }
@@ -99,8 +95,7 @@ public class Drive_Wheel_CS : MonoBehaviour
                 {
                     This_Rigidbody.angularDrag = Control_Script.L_Brake * Turn_Brake_Drag;
                 }
-                else
-                {
+                else {
                     This_Rigidbody.angularDrag = 0.05f;
                 }
                 // Add Torque.
@@ -110,16 +105,14 @@ public class Drive_Wheel_CS : MonoBehaviour
                     { // Forward.
                         This_Rigidbody.AddRelativeTorque(0.0f, -Control_Script.Torque, 0.0f);
                     }
-                    else
-                    { // Backward.
+                    else { // Backward.
                         This_Rigidbody.AddRelativeTorque(0.0f, Control_Script.Torque, 0.0f);
                     }
                 }
             }
         }
-        else
-        { // Right
-          // Set Max Angular Velocity.
+        else { // Right
+               // Set Max Angular Velocity.
             This_Rigidbody.maxAngularVelocity = MaxAngVelocity * Control_Script.R_Speed_Rate;
             if (Flag)
             {
@@ -128,8 +121,7 @@ public class Drive_Wheel_CS : MonoBehaviour
                 {
                     This_Rigidbody.angularDrag = Control_Script.R_Brake * Turn_Brake_Drag;
                 }
-                else
-                {
+                else {
                     This_Rigidbody.angularDrag = 0.05f;
                 }
                 // Add Torque.
@@ -139,8 +131,7 @@ public class Drive_Wheel_CS : MonoBehaviour
                     { // Forward.
                         This_Rigidbody.AddRelativeTorque(0.0f, Control_Script.Torque, 0.0f);
                     }
-                    else
-                    { // Backward.
+                    else { // Backward.
                         This_Rigidbody.AddRelativeTorque(0.0f, -Control_Script.Torque, 0.0f);
                     }
                 }
@@ -161,8 +152,7 @@ public class Drive_Wheel_CS : MonoBehaviour
                 {
                     This_Rigidbody.angularDrag = Control_Script.L_Brake * Turn_Brake_Drag;
                 }
-                else
-                {
+                else {
                     This_Rigidbody.angularDrag = 0.05f;
                 }
                 // Add Torque.
@@ -179,9 +169,8 @@ public class Drive_Wheel_CS : MonoBehaviour
                 }
             }
         }
-        else
-        { // Right
-          // Set Max Angular Velocity.
+        else { // Right
+               // Set Max Angular Velocity.
             This_Rigidbody.maxAngularVelocity = Mathf.Abs(MaxAngVelocity * Control_Script.R_Temp);
             if (Flag)
             {
@@ -190,8 +179,7 @@ public class Drive_Wheel_CS : MonoBehaviour
                 {
                     This_Rigidbody.angularDrag = Control_Script.R_Brake * Turn_Brake_Drag;
                 }
-                else
-                {
+                else {
                     This_Rigidbody.angularDrag = 0.05f;
                 }
                 // Add Torque.
@@ -226,14 +214,12 @@ public class Drive_Wheel_CS : MonoBehaviour
         {
             Flag = true;
         }
-        else
-        {
+        else {
             if (Input_Type == 4 || Input_Type == 10)
             {
                 Flag = true;
             }
-            else
-            {
+            else {
                 Flag = false;
             }
         }
@@ -252,6 +238,11 @@ public class Drive_Wheel_CS : MonoBehaviour
         // For physics bug of Unity5.
         MaxAngVelocity = Mathf.Clamp(MaxAngVelocity, 0.0f, Temp_Script.MaxAngVelocity_Limit);
         Turn_Brake_Drag = Temp_Script.Turn_Brake_Drag;
+    }
+
+    public void DisableDriveWheel()
+    {
+        this.enabled = false;
     }
 
 }

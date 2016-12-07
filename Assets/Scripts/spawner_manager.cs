@@ -101,7 +101,7 @@ public class spawner_manager : MonoBehaviour
         // ADD OWNER TODO!!!!!!!!!!!!!!!!!!
         if (current_player == owner)
         {
-            camera_rig.transform.position = new Vector3(x, y, z);
+            //camera_rig.transform.position = new Vector3(x, y, z);
             vr_player.gameObject.GetComponent<PlayerController_VR>().camera_rig = camera_rig;
 
             //vr_player.gameObject.GetComponent<PlayerController_VR>().left_controller.transform.SetParent(camera_rig.transform.GetChild(0));
