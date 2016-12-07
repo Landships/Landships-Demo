@@ -156,8 +156,8 @@ public class Turret_Controller_VR : MonoBehaviour
 
     // The client get its values/inputs to send to the server
     void client_send_values() {
-        float[] cannon_base_rotation_values = { cannon_base.transform.eulerAngles.x,
-                                                turret_objects.transform.eulerAngles.y,
+        float[] cannon_base_rotation_values = { cannon_base.transform.localEulerAngles.x,
+                                                turret_objects.transform.localEulerAngles.y,
                                                 0};
         /*
         float[] hull_rotation_values = { transform.localRotation.eulerAngles.x,
@@ -178,8 +178,8 @@ public class Turret_Controller_VR : MonoBehaviour
     // Server Updates the server larger buffer it is going to send
     public void server_get_values_to_send() {
 
-        float[] cannon_base_rotation_values = { cannon_base.transform.eulerAngles.x,
-                                                turret_objects.transform.eulerAngles.y,
+        float[] cannon_base_rotation_values = { cannon_base.transform.localEulerAngles.x,
+                                                turret_objects.transform.localEulerAngles.y,
                                                 0};
         /*
         float[] hull_rotation_values = { transform.localRotation.eulerAngles.x,
